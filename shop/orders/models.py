@@ -32,3 +32,6 @@ class Position(models.Model):
     order = models.ForeignKey(Order, verbose_name="Заказ", on_delete=models.CASCADE, related_name="position")
     product = models.ForeignKey(Product, verbose_name="Товар", blank=False, related_name="position", on_delete=models.DO_NOTHING, default=None)
     quantity = models.IntegerField(blank=False, null=False, verbose_name="Кол-во единиц")
+
+    def __str__(self):
+        return f'Позиция: {self.id} - Заказ: {self.order.id}'
