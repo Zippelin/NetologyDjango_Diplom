@@ -13,7 +13,7 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [
         PositionInline
     ]
-    readonly_fields = ('total_sum',)
+    readonly_fields = ('total_sum', 'date_creation', 'date_update')
 
 
 @admin.register(Position)

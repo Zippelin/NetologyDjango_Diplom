@@ -14,11 +14,7 @@ class OrderAPIView(ModelViewSet):
     filterset_class = OrderFilter
 
     def get_permissions(self):
-        if self.action in ['create']:
-            return[IsAuthenticated()]
-        elif self.action in ['list']:
-            return [IsAuthenticated()]
-        return []
+        return [IsAuthenticated()]
 
     def get_queryset(self):
         user = self.request.user

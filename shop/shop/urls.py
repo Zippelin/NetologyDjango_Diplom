@@ -19,6 +19,7 @@ from rest_framework.authtoken import views as auth_view
 from products import views_api as products_views_api
 from reviews import views_api as reviews_views_api
 from orders import views_api as orders_views_api
+from collections_ import views_api as collections_view_api
 
 
 from rest_framework import routers
@@ -30,6 +31,7 @@ router = routers.DefaultRouter()
 router.register('products', products_views_api.ProductAPIView)
 router.register('product-reviews', reviews_views_api.ReviewsAPIView)
 router.register('orders', orders_views_api.OrderAPIView)
+router.register('product-collections', collections_view_api.OrderAPIView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

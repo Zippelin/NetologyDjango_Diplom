@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
 from orders.models import Order, Position
@@ -28,29 +29,31 @@ class OrderSerializer(serializers.ModelSerializer):
         extra_kwargs = {'id': {'read_only': False}}
 
     def create(self, validated_data):
-        print(2)
         positions = validated_data.pop('position')
-        print(positions)
         order = Order.objects.create(**validated_data)
         sum = 0
         for position in positions:
             product = Product.objects.get(**position['product'])
-            print(product)
-            Position.objects.create(order=order, **position)
-            #sum += position['quantity'] * position['product'][0]['price']
+            Position.objects.create(order=order, product=product, quantity=position['quantity'])
+            sum += position['quantity'] * product.price
         order.total_sum = sum
         order.save()
         return order
 
     def update(self, instance, validated_data):
-        print(1)
-        positions = validated_data.pop('position')
+        positions = validated_data.pop("position")
+        instance.status = validated_data['status']
         sum = 0
         for position in positions:
-            Position.objects.create(order=instance.id, product=position.product, quantity=position.quantity)
-            sum += position.quantity * position.product.price
+            product = Product.objects.get(**position['product'])
+            if position.get('id'):
+                new_position = get_object_or_404(Position, id=position.get('id'))
+                new_position.quantity = position['quantity']
+                new_position.product = product
+                new_position.save()
+            else:
+                Position.objects.create(order=instance, product=product, quantity=position['quantity'])
+            sum += position['quantity'] * product.price
         instance.total_sum = sum
         instance.save()
         return instance
-
-        # TODO доделать чтобы при посте создавался модель МкМ
