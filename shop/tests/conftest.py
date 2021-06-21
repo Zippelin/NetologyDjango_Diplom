@@ -9,7 +9,7 @@ def api_client():
 
 
 @pytest.fixture
-def orders_factory():
+def products_factory():
     def factory(**kwargs):
-        return baker.make('Order', **kwargs)
+        return baker.make('products.Product', **kwargs)
     return factory
