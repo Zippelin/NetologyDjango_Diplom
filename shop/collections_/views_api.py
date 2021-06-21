@@ -7,7 +7,7 @@ from collections_.models import Collection
 from collections_.serializers import CollectionSerializer
 
 
-class OrderAPIView(ModelViewSet):
+class CollectionsAPIView(ModelViewSet):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
     filter_backends = [DjangoFilterBackend]

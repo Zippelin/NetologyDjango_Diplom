@@ -4,7 +4,6 @@ from reviews.models import Review
 
 
 class ReviewFilter(filters.FilterSet):
-    description = filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
         model = Review

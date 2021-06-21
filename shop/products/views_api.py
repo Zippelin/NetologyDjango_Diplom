@@ -14,6 +14,6 @@ class ProductAPIView(ModelViewSet):
     filterset_class = ProductsFilter
 
     def get_permissions(self):
-        if self.action in ['create']:
+        if self.action in ['create', 'destroy', 'update', 'partial_update',]:
             return[IsAdminUser()]
         return []

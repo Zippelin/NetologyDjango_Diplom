@@ -2,3 +2,6 @@ django-rest-framework=3.12
 Django~=3.2.4
 psycopg2
 django-filter
+pytest
+pytest-django
+model_bakery

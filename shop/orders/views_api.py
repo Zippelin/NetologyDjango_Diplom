@@ -21,11 +21,3 @@ class OrderAPIView(ModelViewSet):
         if user.is_superuser:
             return super(OrderAPIView, self).get_queryset()
         return super(OrderAPIView, self).get_queryset().filter(author=user)
-
-    # def get_serializer_context(self):
-    #     context = super(OrderAPIView, self).get_serializer_context()
-    #     context.update(
-    #         {'contenxt': self.request}
-    #     )
-    #     print(context)
-    #     return context

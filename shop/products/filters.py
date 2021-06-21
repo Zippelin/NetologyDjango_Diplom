@@ -8,4 +8,4 @@ class ProductsFilter(filters.FilterSet):
 
     class Meta:
         model = Product
-        fields = ('price',)
+        fields = ('price', 'description')

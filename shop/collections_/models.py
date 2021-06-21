@@ -10,7 +10,7 @@ class Collection(CommonAbstractModel):
 
     title = models.CharField(max_length=250, verbose_name="Заголовок")
     text = models.TextField(verbose_name="Текст")
-    products = models.ManyToManyField(Product, verbose_name="Товар", related_name="collections")
+    products = models.ManyToManyField(Product, verbose_name="Товар")
 
     def __str__(self):
         return self.title

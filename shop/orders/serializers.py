@@ -7,17 +7,14 @@ from products.serializers import ProductSerializer
 
 
 class PositionSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(required=False)
     product = ProductSerializer()
 
     class Meta:
         model = Position
         fields = ['id', 'quantity', 'product']
-        extra_kwargs = {'id': {'read_only': False}}
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(required=False)
     position = PositionSerializer(many=True)
     total_sum = serializers.FloatField(read_only=True)
 
@@ -26,13 +23,12 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'author', 'status', 'total_sum', 'position', 'date_creation', 'date_update'
         ]
-        extra_kwargs = {'id': {'read_only': False}}
 
     def create(self, validated_data):
-        positions = validated_data.pop('position')
+        _ = validated_data.pop('position')
         order = Order.objects.create(**validated_data)
         sum = 0
-        for position in positions:
+        for position in self.context['request'].data.get('position'):
             product = Product.objects.get(**position['product'])
             Position.objects.create(order=order, product=product, quantity=position['quantity'])
             sum += position['quantity'] * product.price
@@ -41,10 +37,10 @@ class OrderSerializer(serializers.ModelSerializer):
         return order
 
     def update(self, instance, validated_data):
-        positions = validated_data.pop("position")
+        _ = validated_data.pop("position")
         instance.status = validated_data['status']
         sum = 0
-        for position in positions:
+        for position in self.context['request'].data.get('position'):
             product = Product.objects.get(**position['product'])
             if position.get('id'):
                 new_position = get_object_or_404(Position, id=position.get('id'))
