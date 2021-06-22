@@ -14,6 +14,6 @@ class CollectionsAPIView(ModelViewSet):
     filterset_class = CollectionFilter
 
     def get_permissions(self):
-        if self.action in ['create']:
+        if self.action in ['create', 'update', 'destroy', 'partial_update']:
             return[IsAdminUser()]
         return []
