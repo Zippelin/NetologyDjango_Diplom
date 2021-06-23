@@ -4,6 +4,7 @@ from reviews.models import Review
 
 
 class ReviewFilter(filters.FilterSet):
+    date_creation = filters.DateTimeFromToRangeFilter()
 
     class Meta:
         model = Review

@@ -138,3 +138,26 @@ def test_update_other_review(api_client, user_factory, products_factory, token_f
     api_client.credentials(HTTP_AUTHORIZATION='Token ' + dummy_token)
     resp = api_client.put(url, payload, format='json')
     assert resp.status_code == http_response
+
+
+@pytest.mark.parametrize(
+    ["search_field", "search_text", "http_response", "resr_count"],
+    (
+            ("author", 1, HTTP_200_OK, 2),
+            ("product", None, HTTP_200_OK, 1),
+            ("date_creation", '2021-06-23', HTTP_200_OK, 2),
+    )
+)
+@pytest.mark.django_db
+def test_filters_review(api_client, user_factory, token_factory, reviews_factory, search_field, search_text,
+                          http_response, resr_count):
+    user = user_factory(is_superuser=True)
+    token = token_factory(user=user)
+    reviews = reviews_factory(_quantity=2, author=user)
+    if search_text is None:
+        search_text = reviews[0].product.id
+    url = "%s?%s=%s" % (reverse('review-list'), search_field, search_text)
+    api_client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+    resp = api_client.get(url)
+    assert resp.status_code == http_response
+    assert len(resp.json()) == resr_count
