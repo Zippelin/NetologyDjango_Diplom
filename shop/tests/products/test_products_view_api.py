@@ -70,8 +70,6 @@ def test_update_product(api_client, products_factory, user_factory, token_factor
         "description": "text",
         "price": "11.0"
     }
-
-
     api_client.credentials(HTTP_AUTHORIZATION='Token ' + token)
     resp = api_client.post(url, product_payload, format='json')
     assert resp.status_code == http_response
@@ -90,11 +88,9 @@ def test_delete_product(api_client, user_factory, token_factory, products_factor
     token = token_factory(user=user)
     product = products_factory(_quantity=1)
     url = reverse('product-detail', args=[product[0].id])
-
     api_client.credentials(HTTP_AUTHORIZATION='Token ' + token)
     resp = api_client.delete(url)
     assert resp.status_code == http_response
-
 
 
 @pytest.mark.parametrize(
@@ -111,7 +107,6 @@ def test_filters_products(api_client, products_factory, search_field, search_tex
         search_field: search_text
     }
     _ = products_factory(_quantity=1, **keys)
-
     url = "%s?%s=%s" % (reverse('product-list'), search_field, search_text)
     resp = api_client.get(url)
     assert resp.status_code == http_response
