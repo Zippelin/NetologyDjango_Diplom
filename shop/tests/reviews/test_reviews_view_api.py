@@ -140,7 +140,7 @@ def test_update_other_review(api_client, user_factory, products_factory, token_f
 @pytest.mark.parametrize(
     ["search_field", "search_text", "http_response", "resp_count"],
     (
-            ("author", "admin", HTTP_200_OK, 2),
+            ("author", 1, HTTP_200_OK, 2),
             ("product", None, HTTP_200_OK, 1),
             ("date_creation", '2021-06-23', HTTP_200_OK, 2),
     )
