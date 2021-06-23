@@ -37,7 +37,6 @@ def test_post_orders(api_client, user_factory, token_factory, products_factory, 
 
         "author": user.id,
         "status": "NEW",
-        "total_sum": 22.0,
         "position": [{
             "quantity": 1,
             "product": {
