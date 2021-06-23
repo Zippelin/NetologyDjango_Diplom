@@ -1,1 +1,126 @@
-#Логин под админом
+#Товары
+
+GET http://127.0.0.1:8000/api/v1/products
+Content-Type: application/json
+
+POST http://127.0.0.1:8000/api/v1/products/
+Content-Type:  application/json
+Authorization: Token 2213ec395f32452440630054ed83460d80b05592
+
+{
+  "name": "Nokia N8",
+  "price": 10000
+}
+
+PATCH http://127.0.0.1:8000/api/v1/products/1/
+Content-Type:  application/json
+Authorization: Token 2213ec395f32452440630054ed83460d80b05592
+
+{
+  "price": 20000
+}
+
+DELETE http://127.0.0.1:8000/api/v1/products/1/
+Content-Type: application/json
+Authorization: Token 2213ec395f32452440630054ed83460d80b05592
+
+# Отзывы
+
+GET http://127.0.0.1:8000/api/v1/product-reviews
+Content-Type: application/json
+
+POST http://127.0.0.1:8000/api/v1/product-reviews/
+Content-Type:  application/json
+Authorization: Token 2213ec395f32452440630054ed83460d80b05592
+
+{
+    "product": 1,
+    "text": "Лучший телефон столетия!!",
+    "rating": 5
+}
+
+PATCH http://127.0.0.1:8000/api/v1/products/1/
+Content-Type:  application/json
+Authorization: Token 2213ec395f32452440630054ed83460d80b05592
+
+{
+  "text": "Я передумал, не такойхороший",
+  "rating": 3
+}
+
+DELETE http://127.0.0.1:8000/api/v1/product-reviews/1/
+Content-Type: application/json
+Authorization: Token 2213ec395f32452440630054ed83460d80b05592
+
+# Заказы
+
+GET http://127.0.0.1:8000/api/v1/orders
+Content-Type: application/json
+
+POST http://127.0.0.1:8000/api/v1/orders/
+Content-Type:  application/json
+Authorization: Token 2213ec395f32452440630054ed83460d80b05592
+
+{
+    "status": "NEW",
+    "position": [
+        {
+            "id": 1,
+            "quantity": 5,
+            "product": {
+                "id": 11,
+                "name": "SAMSUNG Galaxy S20+ 8/128Gb, SM-G985F, черный",
+                "description": "Операционная система: Android 10\r\nДисплей: 6.7\", Dynamic AMOLED\r\nРазрешение дисплея: 3200x1440\r\nПроцессор: Exynos 990, , 8-ми ядерный\r\nОбъем оперативной памяти: 8 ГБ\r\nОбъем встроенной памяти: 128 ГБ",
+                "price": "63940.00",
+            }
+        }
+    ]
+}
+
+PATCH http://127.0.0.1:8000/api/v1/products/1/
+Content-Type:  application/json
+Authorization: Token 2213ec395f32452440630054ed83460d80b05592
+
+{
+  "status": "DONE"
+}
+
+DELETE http://127.0.0.1:8000/api/v1/products/1/
+Content-Type: application/json
+Authorization: Token 2213ec395f32452440630054ed83460d80b05592
+
+# Коллекции
+
+GET http://127.0.0.1:8000/api/v1/product-collections/
+Content-Type: application/json
+
+POST http://127.0.0.1:8000/api/v1/product-collections/
+Content-Type:  application/json
+Authorization: Token 2213ec395f32452440630054ed83460d80b05592
+
+{
+    "title": "test",
+    "text": "test test",
+    "products": [
+        {
+            "id": 1,
+            "name": "Nokias",
+            "description": "Передовая нокия",
+            "price": 11.0
+        }
+    ]
+}
+
+
+PATCH http://127.0.0.1:8000/api/v1/product-collections/1/
+Content-Type:  application/json
+Authorization: Token 2213ec395f32452440630054ed83460d80b05592
+
+{
+    "title": "test1",
+    "text": "test test",
+}
+
+DELETE http://127.0.0.1:8000/api/v1/product-collections/1/
+Content-Type: application/json
+Authorization: Token 2213ec395f32452440630054ed83460d80b05592
