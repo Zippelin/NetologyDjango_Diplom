@@ -43,7 +43,6 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_fields(self):
         fields = super(OrderSerializer, self).get_fields()
-        print(self.context['request'])
         if self.context['request'].method in ['PUT', 'PATCH']:
             fields['position'].required = False
         return fields
