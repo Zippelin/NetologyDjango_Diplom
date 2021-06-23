@@ -33,6 +33,25 @@ def test_product_post(api_client, products_factory, user_factory, token_factory,
     assert resp.status_code == http_response
 
 
+@pytest.mark.parametrize(
+    ["search_field", "search_text", "http_response"],
+    (
+        ("name", "test_name", HTTP_200_OK),
+        ("price", "10", HTTP_200_OK),
+        ("description", "test_description", HTTP_200_OK),
+    )
+)
+@pytest.mark.django_db
+def test_filters_products(api_client, products_factory, search_field, search_text, http_response):
+    keys = {
+        search_field: search_text
+    }
+    _ = products_factory(_quantity=1, **keys)
+
+    url = "%s?%s=%s" % (reverse('product-list'), search_field, search_text)
+    resp = api_client.get(url)
+    assert resp.status_code == http_response
+    assert len(resp.json()) == 1
 
 
 

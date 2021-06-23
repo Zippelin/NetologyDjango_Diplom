@@ -13,7 +13,12 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [
         PositionInline
     ]
-    readonly_fields = ('total_sum', 'date_creation', 'date_update')
+    readonly_fields = ('total_sum', 'date_creation', 'date_update', 'author')
+
+    def save_model(self, request, obj, form, change):
+        if getattr(obj, 'author', None) is None:
+            obj.author = request.user
+        obj.save()
 
 
 @admin.register(Position)

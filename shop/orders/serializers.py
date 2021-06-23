@@ -25,10 +25,10 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        _ = validated_data.pop('position')
-        order = Order.objects.create(**validated_data)
+        positions = validated_data.pop('position')
+        order = Order.objects.create(**validated_data, author=self.context['request'].user)
         sum = 0
-        for position in self.context['request'].data.get('position'):
+        for position in positions:
             product = Product.objects.get(**position['product'])
             Position.objects.create(order=order, product=product, quantity=position['quantity'])
             sum += position['quantity'] * product.price
@@ -37,19 +37,13 @@ class OrderSerializer(serializers.ModelSerializer):
         return order
 
     def update(self, instance, validated_data):
-        _ = validated_data.pop("position")
         instance.status = validated_data['status']
-        sum = 0
-        for position in self.context['request'].data.get('position'):
-            product = Product.objects.get(**position['product'])
-            if position.get('id'):
-                new_position = get_object_or_404(Position, id=position.get('id'))
-                new_position.quantity = position['quantity']
-                new_position.product = product
-                new_position.save()
-            else:
-                Position.objects.create(order=instance, product=product, quantity=position['quantity'])
-            sum += position['quantity'] * product.price
-        instance.total_sum = sum
         instance.save()
         return instance
+
+    def get_fields(self):
+        fields = super(OrderSerializer, self).get_fields()
+        print(self.context['request'])
+        if self.context['request'].method in ['PUT', 'PATCH']:
+            fields['position'].required = False
+        return fields

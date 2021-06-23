@@ -1,6 +1,31 @@
 import pytest
 from rest_framework.reverse import reverse
-from rest_framework.status import HTTP_405_METHOD_NOT_ALLOWED, HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_405_METHOD_NOT_ALLOWED, \
+    HTTP_201_CREATED, \
+    HTTP_401_UNAUTHORIZED, \
+    HTTP_400_BAD_REQUEST, \
+    HTTP_204_NO_CONTENT, \
+    HTTP_200_OK
+
+
+@pytest.mark.parametrize(
+    ["is_superuser", "http_response", "results_count"],
+    (
+        (False, HTTP_200_OK, 2),
+        (None, HTTP_401_UNAUTHORIZED, 1),
+    )
+)
+@pytest.mark.django_db
+def test_list_review(api_client, user_factory, results_count, reviews_factory, token_factory, is_superuser, http_response):
+    user = user_factory(is_superuser=is_superuser)
+    token = token_factory(user=user)
+    products = reviews_factory(_quantity=results_count)
+
+    url = reverse('review-list')
+    api_client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+    resp = api_client.get(url)
+    assert resp.status_code == http_response
+    assert len(resp.json()) == results_count
 
 
 @pytest.mark.parametrize(
@@ -11,7 +36,7 @@ from rest_framework.status import HTTP_405_METHOD_NOT_ALLOWED, HTTP_201_CREATED,
     )
 )
 @pytest.mark.django_db
-def test_add_review(api_client, user_factory, products_factory, token_factory, is_superuser, http_response):
+def test_post_review(api_client, user_factory, products_factory, token_factory, is_superuser, http_response):
     user = user_factory(is_superuser=is_superuser)
     token = token_factory(user=user)
     products = products_factory(_quantity=2)
@@ -26,6 +51,25 @@ def test_add_review(api_client, user_factory, products_factory, token_factory, i
     url = reverse('review-list')
     api_client.credentials(HTTP_AUTHORIZATION='Token ' + token)
     resp = api_client.post(url, payload, format='json')
+    assert resp.status_code == http_response
+
+
+@pytest.mark.parametrize(
+    ["is_superuser", "http_response"],
+    (
+        (False, HTTP_204_NO_CONTENT),
+        (None, HTTP_401_UNAUTHORIZED),
+    )
+)
+@pytest.mark.django_db
+def test_delete_review(api_client, user_factory, reviews_factory, token_factory, is_superuser, http_response):
+    user = user_factory(is_superuser=is_superuser)
+    token = token_factory(user=user)
+    review = reviews_factory(_quantity=2, author=user)
+
+    url = reverse('review-detail', args=[review[0].id])
+    api_client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+    resp = api_client.delete(url)
     assert resp.status_code == http_response
 
 

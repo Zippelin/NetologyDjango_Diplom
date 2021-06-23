@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 def add_admin(app, schema_editor):
-    if not User.objects.get(username='admin'):
+    if not User.objects.filter(username='admin').exists():
         user = User(
             username='admin',
             is_active=True,

@@ -15,7 +15,7 @@ class Order(CommonAbstractModel):
         IN_PROGRESS = "IN_PROGRESS", _("IN PROGRESS")
         DONE = "DONE", _("DONE")
 
-    author = models.ForeignKey(User, verbose_name="Автор", related_name="orders", on_delete=models.DO_NOTHING)
+    author = models.ForeignKey(User, verbose_name="Автор", related_name="orders", on_delete=models.DO_NOTHING, editable=False)
     status = models.CharField(choices=Status.choices, verbose_name="Статус", max_length=20)
     total_sum = models.DecimalField(verbose_name="Общая сумма", editable=False, default=0, decimal_places=2, max_digits=10)
     products = models.ManyToManyField(Product, through='Position', related_name="orders")
@@ -30,8 +30,8 @@ class Position(models.Model):
         verbose_name_plural = "Позиции заказа"
 
     order = models.ForeignKey(Order, verbose_name="Заказ", on_delete=models.CASCADE, related_name="position")
-    product = models.ForeignKey(Product, verbose_name="Товар", null=False, blank=False, related_name="position", on_delete=models.CASCADE)
-    quantity = models.IntegerField(blank=False, null=False, verbose_name="Кол-во единиц", default=1)
+    product = models.ForeignKey(Product, verbose_name="Товар", related_name="position", on_delete=models.CASCADE)
+    quantity = models.IntegerField(verbose_name="Кол-во единиц", default=1)
 
     def __str__(self):
         return f'Позиция: {self.id} - Заказ: {self.order.id}'

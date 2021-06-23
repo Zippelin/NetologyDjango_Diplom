@@ -42,11 +42,7 @@ def collections_factory():
 def user_factory():
     def factory(**kwargs):
         if kwargs['is_superuser'] == True:
-            return get_user_model().objects.create(username="admin",
-                                                   password="admin",
-                                                   email="admin@admin.com",
-                                                   is_superuser=True,
-                                                   is_staff=True)
+            return get_user_model().objects.get(username="admin")
         elif kwargs['is_superuser'] == False:
             return get_user_model().objects.create(username="user", password="user", email="user@user.com")
         else:

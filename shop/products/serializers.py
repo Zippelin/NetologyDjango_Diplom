@@ -10,3 +10,8 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'description', 'price', 'date_creation', 'date_update'
         ]
+
+    def validate_price(self, value):
+        if value < 0:
+            raise serializers.ValidationError('Цена неможет быть отрицательной')
+        return value

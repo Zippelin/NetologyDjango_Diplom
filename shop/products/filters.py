@@ -5,7 +5,8 @@ from products.models import Product
 
 class ProductsFilter(filters.FilterSet):
     description = filters.CharFilter(lookup_expr='icontains')
+    name = filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
         model = Product
-        fields = ('price', 'description')
+        fields = ('price', 'description', 'name')

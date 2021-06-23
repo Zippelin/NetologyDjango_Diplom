@@ -17,7 +17,7 @@ class Review(CommonAbstractModel):
         VERY_GOOD = 4
         EXCELLENT = 5
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", related_name="reviews")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", related_name="reviews", editable=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар", related_name="reviews")
     text = models.TextField(verbose_name="Текст")
     rating = models.IntegerField(choices=Rating.choices)

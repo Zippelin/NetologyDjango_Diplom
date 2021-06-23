@@ -5,6 +5,8 @@ from orders.models import Order
 
 class OrderFilter(filters.FilterSet):
     description = filters.CharFilter(lookup_expr='icontains')
+    date_creation = filters.DateTimeFromToRangeFilter()
+    date_update = filters.DateTimeFromToRangeFilter()
 
     class Meta:
         model = Order

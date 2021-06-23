@@ -15,7 +15,7 @@ class Product(CommonAbstractModel):
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
 
-    name = models.CharField(max_length=150, null=False, blank=False, verbose_name="Наименование")
+    name = models.CharField(max_length=150, verbose_name="Наименование")
     description = models.TextField(verbose_name="Описание")
     price = models.DecimalField(verbose_name="Цена", decimal_places=2, max_digits=10)
 

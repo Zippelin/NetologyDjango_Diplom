@@ -1,6 +1,19 @@
 import pytest
 from rest_framework.reverse import reverse
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_401_UNAUTHORIZED
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_204_NO_CONTENT
+
+
+@pytest.mark.parametrize(
+    ["is_superuser", "http_response"],
+    (
+        (None, HTTP_200_OK),
+    )
+)
+@pytest.mark.django_db
+def test_collections_list(api_client, user_factory, token_factory, is_superuser, http_response):
+    url = reverse('collection-list')
+    resp = api_client.get(url)
+    assert resp.status_code == http_response
 
 
 @pytest.mark.parametrize(
@@ -70,6 +83,41 @@ def test_update_collections(api_client, user_factory, token_factory, collections
     assert resp.status_code == http_response
 
 
+@pytest.mark.parametrize(
+    ["is_superuser", "http_response"],
+    (
+        (True, HTTP_204_NO_CONTENT),
+        (None, HTTP_401_UNAUTHORIZED)
+    )
+)
+@pytest.mark.django_db
+def test_delete_collections(api_client, user_factory, token_factory, collections_factory, is_superuser, http_response):
+    user = user_factory(is_superuser=is_superuser)
+    token = token_factory(user=user)
+    collection = collections_factory(_quantity=1)
+
+    url = reverse('collection-detail', args=[collection[0].id])
+
+    api_client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+    resp = api_client.delete(url)
+    assert resp.status_code == http_response
 
 
+@pytest.mark.parametrize(
+    ["search_field", "search_text", "http_response"],
+    (
+        ("title", "test_title", HTTP_200_OK),
+    )
+)
+@pytest.mark.django_db
+def test_filters_collections(api_client, user_factory, token_factory, collections_factory, search_field, search_text, http_response):
+    keys = {
+        search_field: search_text
+    }
+    collection = collections_factory(_quantity=1, **keys)
+
+    url = "%s?%s=%s" % (reverse('collection-list'), search_field, search_text)
+    resp = api_client.get(url)
+    assert resp.status_code == http_response
+    assert len(resp.json()) == 1
 
