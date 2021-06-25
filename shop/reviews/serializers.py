@@ -9,6 +9,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = [
             'author', 'product', 'text', 'rating'
         ]
+        read_only_fields = ['author']
 
     def validate_product(self, value):
         if value.reviews.filter(author=self.context.get('request').user).exists():

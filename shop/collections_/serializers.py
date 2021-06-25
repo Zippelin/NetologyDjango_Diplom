@@ -6,8 +6,13 @@ from products.models import Product
 from products.serializers import ProductSerializer
 
 
-class CollectionSerializer(serializers.ModelSerializer):
-    products = ProductSerializer(many=True)
+class ProductShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['id',]
+
+
+class CollectionCommonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Collection
@@ -36,3 +41,11 @@ class CollectionSerializer(serializers.ModelSerializer):
         if self.action in ['list']:
             return []
         return [IsAdminUser()]
+
+
+class CollectionGetSerializer(CollectionCommonSerializer):
+    products = ProductSerializer(many=True)
+
+
+class CollectionPostSerializer(CollectionCommonSerializer):
+    products = ProductShortSerializer(many=True)
