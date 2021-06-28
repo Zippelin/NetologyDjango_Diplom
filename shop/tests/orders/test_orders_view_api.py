@@ -140,9 +140,9 @@ def test_filters_orders(api_client, user_factory, token_factory, orders_factory,
     else:
         orders = orders_factory(_quantity=1)
         search_text = orders[0].products.first().id
-    url = "%s?%s=%s" % (reverse('order-list'), search_field, search_text)
+    url = reverse('order-list')
     api_client.credentials(HTTP_AUTHORIZATION='Token ' + token)
-    resp = api_client.get(url)
+    resp = api_client.get(url, params={search_field:search_text})
     assert resp.status_code == http_response
     assert len(resp.json()) == 1
 

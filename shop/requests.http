@@ -62,17 +62,14 @@ Content-Type:  application/json
 Authorization: Token 2213ec395f32452440630054ed83460d80b05592
 
 {
-    "status": "NEW",
     "position": [
         {
-            "id": 1,
-            "quantity": 5,
-            "product": {
-                "id": 11,
-                "name": "SAMSUNG Galaxy S20+ 8/128Gb, SM-G985F, черный",
-                "description": "Операционная система: Android 10\r\nДисплей: 6.7\", Dynamic AMOLED\r\nРазрешение дисплея: 3200x1440\r\nПроцессор: Exynos 990, , 8-ми ядерный\r\nОбъем оперативной памяти: 8 ГБ\r\nОбъем встроенной памяти: 128 ГБ",
-                "price": "63940.00",
-            }
+            "quantity": 10,
+            "product": 11
+        },
+        {
+            "quantity": 10,
+            "product": 12
         }
     ]
 }
@@ -101,14 +98,7 @@ Authorization: Token 2213ec395f32452440630054ed83460d80b05592
 {
     "title": "test",
     "text": "test test",
-    "products": [
-        {
-            "id": 1,
-            "name": "Nokias",
-            "description": "Передовая нокия",
-            "price": 11.0
-        }
-    ]
+    "products": [7, 8]
 }
 
 
@@ -117,8 +107,9 @@ Content-Type:  application/json
 Authorization: Token 2213ec395f32452440630054ed83460d80b05592
 
 {
-    "title": "test1",
+    "title": "34",
     "text": "test test",
+    "products": [7,8]
 }
 
 DELETE http://127.0.0.1:8000/api/v1/product-collections/1/

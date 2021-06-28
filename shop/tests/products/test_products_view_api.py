@@ -107,8 +107,8 @@ def test_filters_products(api_client, products_factory, search_field, search_tex
         search_field: search_text
     }
     _ = products_factory(_quantity=1, **keys)
-    url = "%s?%s=%s" % (reverse('product-list'), search_field, search_text)
-    resp = api_client.get(url)
+    url = reverse('product-list')
+    resp = api_client.get(url, params={search_field:search_text})
     assert resp.status_code == http_response
     assert len(resp.json()) == 1
 

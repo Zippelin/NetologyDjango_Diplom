@@ -20,6 +20,6 @@ class CollectionsAPIView(ModelViewSet):
 
     def get_serializer_class(self):
         serializer_class = super(CollectionsAPIView, self).get_serializer_class()
-        if self.action in ['create']:
+        if self.action in ['create', 'update', 'partial_update']:
             serializer_class = CollectionPostSerializer
         return serializer_class

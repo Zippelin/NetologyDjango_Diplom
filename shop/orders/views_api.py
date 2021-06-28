@@ -4,12 +4,12 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from orders.filters import OrderFilter
 from orders.models import Order
-from orders.serializers import OrderSerializer
+from orders.serializers import OrderGetSerializer, OrderPostSerializer
 
 
 class OrderAPIView(ModelViewSet):
     queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+    serializer_class = OrderGetSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = OrderFilter
 
@@ -21,3 +21,9 @@ class OrderAPIView(ModelViewSet):
         if user.is_superuser:
             return super(OrderAPIView, self).get_queryset()
         return super(OrderAPIView, self).get_queryset().filter(author=user)
+
+    def get_serializer_class(self):
+        serializer_class = super(OrderAPIView, self).get_serializer_class()
+        if self.action in ['create']:
+            serializer_class = OrderPostSerializer
+        return serializer_class

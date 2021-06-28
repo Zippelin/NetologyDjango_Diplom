@@ -116,8 +116,8 @@ def test_filters_collections(api_client, user_factory, token_factory, collection
     }
     collection = collections_factory(_quantity=1, **keys)
 
-    url = "%s?%s=%s" % (reverse('collection-list'), search_field, search_text)
-    resp = api_client.get(url)
+    url = reverse('collection-list')
+    resp = api_client.get(url, params={search_field:search_text})
     assert resp.status_code == http_response
     assert len(resp.json()) == 1
 
