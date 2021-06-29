@@ -1,6 +1,6 @@
 djangorestframework==3.12.4
 Django~=3.2.4
-psycopg2
+psycopg2-binary
 django-filter
 pytest
 pytest-django

@@ -16,7 +16,6 @@ class CollectionCommonSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         products = validated_data.pop('products')
-        print(products)
         collection = Collection.objects.create(**validated_data)
         for product in products:
             collection.products.add(product)
@@ -24,7 +23,7 @@ class CollectionCommonSerializer(serializers.ModelSerializer):
         return collection
 
     def update(self, instance, validated_data):
-        products = validated_data.pop('products')
+        products = validated_data.get('products')
         instance.title = validated_data['title']
         instance.text = validated_data['text']
         for product in products:
@@ -44,3 +43,8 @@ class CollectionGetSerializer(CollectionCommonSerializer):
 
 class CollectionPostSerializer(CollectionCommonSerializer):
     products = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), many=True)
+
+    def validate(self, data):
+        if not data.get('products'):
+            raise serializers.ValidationError('Нужен хотябы один продукт для подборки')
+        return data
