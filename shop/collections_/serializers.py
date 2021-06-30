@@ -24,12 +24,12 @@ class CollectionCommonSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         products = validated_data.get('products')
-        instance.title = validated_data['title']
-        instance.text = validated_data['text']
+        if validated_data.get('title'):
+            instance.title = validated_data.get('title')
+        if validated_data.get('text'):
+            instance.text = validated_data.get('text')
         if products:
             instance.products.set(products)
-        # for product in products:
-        #     instance.products.add(product)
         instance.save()
         return instance
 
@@ -45,6 +45,8 @@ class CollectionGetSerializer(CollectionCommonSerializer):
 
 class CollectionPostSerializer(CollectionCommonSerializer):
     products = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), many=True, required=False)
+    title = serializers.CharField(required=False)
+    text = serializers.CharField(required=False)
 
     def validate_products(self, value):
         if self.context.get('action') == 'create' and len(value) == 0:
