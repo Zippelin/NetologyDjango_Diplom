@@ -150,11 +150,13 @@ def test_filters_review(api_client, user_factory, token_factory, reviews_factory
                         http_response, resp_count):
     user = user_factory(is_superuser=True)
     token = token_factory(user=user)
-    reviews = reviews_factory(_quantity=2, author=user)
     if search_text is None:
+        reviews = reviews_factory(_quantity=1, author=user)
         search_text = reviews[0].product.id
+    else:
+        reviews = reviews_factory(_quantity=2, author=user)
     url = reverse('review-list')
     api_client.credentials(HTTP_AUTHORIZATION='Token ' + token)
-    resp = api_client.get(url, params={search_field:search_text})
+    resp = api_client.get(url, params={search_field: search_text})
     assert resp.status_code == http_response
     assert len(resp.json()) == resp_count

@@ -23,3 +23,6 @@ class CollectionsAPIView(ModelViewSet):
         if self.action in ['create', 'update', 'partial_update']:
             serializer_class = CollectionPostSerializer
         return serializer_class
+
+    def get_serializer_context(self):
+        return {'request': self.request, 'action': self.action}

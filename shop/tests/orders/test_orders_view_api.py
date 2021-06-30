@@ -39,12 +39,7 @@ def test_post_orders(api_client, user_factory, token_factory, products_factory, 
         "status": "NEW",
         "position": [{
             "quantity": 1,
-            "product": {
-                "id": products[0].id,
-                "name": products[0].name,
-                "description": products[0].description,
-                "price": products[0].price
-            }
+            "product": products[0].id
         }],
     }
 

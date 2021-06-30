@@ -34,14 +34,7 @@ def test_post_collections(api_client, user_factory, token_factory, products_fact
     payload = {
         "title": "test",
         "text": "test test",
-        "products": [
-            {
-                "id": products[0].id,
-                "name": products[0].name,
-                "description": products[0].description,
-                "price": products[0].price
-            }
-        ]
+        "products": [products[0].id,]
     }
 
     api_client.credentials(HTTP_AUTHORIZATION='Token ' + token)
@@ -68,14 +61,7 @@ def test_update_collections(api_client, user_factory, token_factory, collections
         "id": collection[0].id,
         "title": "test",
         "text": "test test",
-        "products": [
-            {
-                "id": collection[0].products.first().id,
-                "name": collection[0].products.first().name,
-                "description": collection[0].products.first().description,
-                "price": collection[0].products.first().price
-            }
-        ]
+        "products": [collection[0].products.first().id,]
     }
 
     api_client.credentials(HTTP_AUTHORIZATION='Token ' + token)
