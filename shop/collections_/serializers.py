@@ -24,10 +24,8 @@ class CollectionCommonSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         products = validated_data.get('products')
-        if validated_data.get('title'):
-            instance.title = validated_data.get('title')
-        if validated_data.get('text'):
-            instance.text = validated_data.get('text')
+        instance.title = validated_data.get('title') if validated_data.get('title') else instance.title
+        instance.text = validated_data.get('text') if validated_data.get('text') else instance.text
         if products:
             instance.products.set(products)
         instance.save()
